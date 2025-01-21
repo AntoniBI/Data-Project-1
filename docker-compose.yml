@@ -1,41 +1,13 @@
 version: '3.5'
 
 services:
-  postgres:
-    container_name: postgres_container1
-    image: postgis/postgis:12-3.1 # Imagen de PostgreSQL con PostGIS
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Welcome01
-      PGDATA: /data/postgres
-    volumes:
-      - postgres:/data/postgres
-    ports:
-      - "5432:5432"  # Expone PostgreSQL en el puerto 5432
-    restart: unless-stopped
-    networks:
-      - app-valencia
 
-  pgadmin:
-    container_name: pgadmin_container1
-    image: dpage/pgadmin4:4.16
-    environment:
-      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
-      PGADMIN_DEFAULT_PASSWORD: admin
-    volumes:
-      - pgadmin:/var/lib/pgadmin
-    ports:
-      - "5050:80"  # Expone PgAdmin en el puerto 5050
-    restart: unless-stopped
-    networks:
-      - app-valencia
-  
   nifi:
     image: apache/nifi:1.28.1
-    container_name: nifi
+    container_name: nifi_data_project1
     restart: always
     ports:
-      - 8443:8443 # Expone NiFi en el puerto 8443
+      - 8443:8443
     environment:
       - SINGLE_USER_CREDENTIALS_USERNAME=admin
       - SINGLE_USER_CREDENTIALS_PASSWORD=ctsBtRBKHRAx69EqUghvvgEvjnaLjFEB
@@ -43,8 +15,8 @@ services:
       - ./data:/tmp/data
     user: "0:0"
     networks:
-      - app-valencia  
-    
+      - data_project1  
+
   mongo:
     image: mongo
     restart: always
@@ -56,7 +28,7 @@ services:
     volumes:
       - data:/data/db
     networks:
-      - app-valencia
+      - data_project1 
 
   mongo-express:
     image: mongo-express
@@ -68,15 +40,43 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: example
       ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
     networks:
-      - app-valencia
+      - data_project1 
   
+  postgres:
+    container_name: postgres_data_project1
+    image: postgis/postgis:12-3.1 # Imagen de PostgreSQL con PostGIS
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Welcome01
+      POSTGRES_DB: postgres_data_project1
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    restart: always
+    networks:
+      - data_project1 
+
+  pgadmin:
+    container_name: pgadmin_data_project1
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - 8082:80
+    depends_on:
+      - postgres
+    networks:
+      - data_project1 
 
 volumes:
   postgres:  # Volumen para persistir los datos de PostgreSQL
-  pgadmin:   #Volumen para persistir los datos de PgAdmin
+  pgadmin:   # Volumen para persistir los datos de PgAdmin
   data:      # Volumen para persistir los datos de MongoDB
   data-nifi: # Volumen para persistir los datos de NiFi
 
-
 networks:
-  app-valencia:  # Red compartida para todos los servicios
+  data_project1:  # Red compartida para todos los servicios
