@@ -2,8 +2,8 @@ version: '3.5'
 
 services:
   postgres:
-    container_name: postgres_containe
-    image: postgis/postgis:12-3.1
+    container_name: postgres_container1
+    image: postgis/postgis:12-3.1 # Imagen de PostgreSQL con PostGIS
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Welcome01
@@ -14,54 +14,44 @@ services:
       - "5432:5432"  # Expone PostgreSQL en el puerto 5432
     restart: unless-stopped
     networks:
-      - app-network
+      - app-valencia
 
   pgadmin:
-    container_name: pgadmin_containe
+    container_name: pgadmin_container1
     image: dpage/pgadmin4:4.16
     environment:
       PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
       PGADMIN_DEFAULT_PASSWORD: admin
     volumes:
       - pgadmin:/var/lib/pgadmin
-      - ./pgadmin-servers.json:/pgadmin4/servers.json  # Monta el archivo JSON con los servidores
     ports:
       - "5050:80"  # Expone PgAdmin en el puerto 5050
     restart: unless-stopped
     networks:
-      - app-network
-
+      - app-valencia
+  
   nifi:
     image: apache/nifi:1.28.1
     container_name: nifi
     restart: always
     ports:
-      - 8443:8443
+      - 8443:8443 #Expone NiFi en el puerto 8443
     environment:
       - SINGLE_USER_CREDENTIALS_USERNAME=admin
       - SINGLE_USER_CREDENTIALS_PASSWORD=ctsBtRBKHRAx69EqUghvvgEvjnaLjFEB
     volumes:
-      - ./data:/tmp/data
+      - ./nifi_data:/opt/nifi/nifi-current
+      
     user: "0:0"
-
+    networks:
+      - app-valencia
   
-  mongo:
-    image: mongo
-    restart: always
-    ports:
-      - 27017:27017    
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
-    volumes:
-      - data:/data/db
 
-  mongo-express:
-    image: mongo-express
-    restart: always
-    ports:
-      - 8081:8081
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: example
-      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+volumes:
+  postgres:  # Volumen para persistir los datos de PostgreSQL
+  pgadmin:   #Volumen para persistir los datos de PgAdmin
+  nifi_data: #Volumen para persistir los datos de NiFi
+
+
+networks:
+  app-valencia:  # Red compartida para todos los servicios
