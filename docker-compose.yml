@@ -35,16 +35,15 @@ services:
     container_name: nifi
     restart: always
     ports:
-      - 8443:8443 #Expone NiFi en el puerto 8443
+      - 8443:8443
     environment:
       - SINGLE_USER_CREDENTIALS_USERNAME=admin
       - SINGLE_USER_CREDENTIALS_PASSWORD=ctsBtRBKHRAx69EqUghvvgEvjnaLjFEB
     volumes:
-      - ./nifi_data:/opt/nifi/nifi-current
-      
+      - ./data:/tmp/data
     user: "0:0"
     networks:
-      - app-valencia
+      - app-valencia  
   
 
 volumes:
