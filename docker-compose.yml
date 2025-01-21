@@ -35,7 +35,7 @@ services:
     container_name: nifi
     restart: always
     ports:
-      - 8443:8443
+      - 8443:8443 # Expone NiFi en el puerto 8443
     environment:
       - SINGLE_USER_CREDENTIALS_USERNAME=admin
       - SINGLE_USER_CREDENTIALS_PASSWORD=ctsBtRBKHRAx69EqUghvvgEvjnaLjFEB
