@@ -1,5 +1,3 @@
-# 
-
 import pymongo
 import psycopg2
 
