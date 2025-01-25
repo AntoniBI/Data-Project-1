@@ -12,6 +12,8 @@ services:
     volumes:
       - ./data:/tmp/data
     user: "0:0" 
+    networks:
+      - dataproject1
 
   mongo:
     image: mongo
@@ -23,6 +25,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
     volumes:
       - data:/data/db
+    networks:
+      - dataproject1
 
   mongo-express:
     image: mongo-express
@@ -33,6 +37,8 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: example
       ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+    networks:
+      - dataproject1
   
   postgres:
     container_name: postgres_data_project1
@@ -44,6 +50,8 @@ services:
     ports:
       - "5432:5432"
     restart: always
+    networks:
+      - dataproject1
 
   pgadmin:
     container_name: pgadmin_dp1
@@ -55,6 +63,12 @@ services:
       - 8082:80
     depends_on:
       - postgres
+    networks:
+      - dataproject1
+
+networks:
+  dataproject1:
+    driver: bridge
 
 volumes:
   data:
