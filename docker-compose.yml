@@ -2,7 +2,7 @@ services:
 
   nifi:
     image: apache/nifi:1.28.1
-    container_name: nifi_data_project1
+    container_name: nifi_dp1
     restart: always
     ports:
       - 8443:8443
@@ -15,7 +15,6 @@ services:
 
   mongo:
     image: mongo
-    container_name: mongo
     restart: always
     ports:
       - 27017:27017    
@@ -27,7 +26,6 @@ services:
 
   mongo-express:
     image: mongo-express
-    container_name: mongo-express
     restart: always
     ports:
       - 8081:8081
@@ -43,27 +41,20 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Welcome01
       POSTGRES_DB: postgres_data_project1
-    volumes:
-      - postgres:/data/postgres
     ports:
       - "5432:5432"
     restart: always
 
   pgadmin:
-    container_name: pgadmin
+    container_name: pgadmin_dp1
     image: dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
       PGADMIN_DEFAULT_PASSWORD: admin
-    volumes:
-      - pgadmin:/var/lib/pgadmin
     ports:
       - 8082:80
     depends_on:
       - postgres
 
 volumes:
-  postgres:  # Volumen para persistir los datos de PostgreSQL
-  pgadmin:   # Volumen para persistir los datos de PgAdmin
-  data:      # Volumen para persistir los datos de MongoDB
-  data-nifi: # Volumen para persistir los datos de NiFi
+  data:
