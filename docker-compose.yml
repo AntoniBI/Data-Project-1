@@ -8,9 +8,10 @@ services:
       - 8443:8443
     environment:
       - SINGLE_USER_CREDENTIALS_USERNAME=admin
-      - SINGLE_USER_CREDENTIALS_PASSWORD=ctsBtRBKHRAx69EqUghvvgEvjnaLjFEB
+      - SINGLE_USER_CREDENTIALS_PASSWORD=password
     volumes:
-      - ./data:/tmp/data
+    #  - ./data/flow.xml:/opt/nifi/nifi-current/conf/flow.xml 
+    # Es necesario poner el fichero en gz y bajar toda la config mapeada
     user: "0:0" 
     networks:
       - dataproject1
@@ -38,6 +39,9 @@ services:
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_ENABLE_ADMIN: true
+      ME_CONFIG_BASICAUTH_USERNAME: pedro
+      ME_CONFIG_BASICAUTH_PASSWORD: pedro 
       ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
     networks:
       - dataproject1
@@ -58,7 +62,7 @@ services:
       - dataproject1
 
   pgadmin:
-    container_name: pgadmin
+    container_name: pgadmin_data_project1
     image: dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
