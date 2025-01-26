@@ -10,7 +10,7 @@ services:
       - SINGLE_USER_CREDENTIALS_USERNAME=admin
       - SINGLE_USER_CREDENTIALS_PASSWORD=password
     volumes:
-    #  - ./data/flow.xml:/opt/nifi/nifi-current/conf/flow.xml 
+      - ./data/flow.xml:/opt/nifi/nifi-current/conf/flow.xml 
     # Es necesario poner el fichero en gz y bajar toda la config mapeada
     user: "0:0" 
     networks:

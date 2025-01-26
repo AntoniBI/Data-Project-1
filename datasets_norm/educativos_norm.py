@@ -34,15 +34,29 @@ if todos_codpos:  # Verificar que la lista no esté vacía
         else:
             codpos_count.append([codpos, frecuencia, None])  # Agregar None si no hay distrito asociado
 
-# Imprimir la lista
-if codpos_count:
-    for item in codpos_count:
-        if item[2] is None:
-            print(f"Código Postal: {item[0]}, Frecuencia: {item[1]}, Distrito: No asignado")
+# Sumar las frecuencias por distrito
+district_frequencies = {}
+for item in codpos_count:
+    district_id = item[2]
+    if district_id is not None:
+        if district_id in district_frequencies:
+            district_frequencies[district_id] += item[1]
         else:
-            print(f"Código Postal: {item[0]}, Frecuencia: {item[1]}, Distrito: {item[2]}")
-else:
-    print("No se encontraron datos para generar la lista.")
+            district_frequencies[district_id] = item[1]
+
+# Encontrar la frecuencia máxima entre los distritos
+frecuencia_max = max(district_frequencies.values()) if district_frequencies else 1
+
+# Crear una tabla normalizada por distrito
+district_normalized = []
+for district_id, total_frecuencia in district_frequencies.items():
+    normalized_frequency = round(total_frecuencia / frecuencia_max, 2)
+    district_normalized.append([district_id, total_frecuencia, normalized_frequency])
+
+# Imprimir la tabla normalizada
+print("\nTabla con frecuencia normalizada por distrito:")
+for item in district_normalized:
+    print(f"Distrito: {item[0]}, Frecuencia Total: {item[1]}, Frecuencia Normalizada: {item[2]}")
 
 # Mensaje de éxito
-print("Lista generada correctamente.")
+print("Frecuencia normalizada por distrito calculada correctamente.")
