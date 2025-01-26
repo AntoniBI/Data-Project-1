@@ -1,4 +1,5 @@
 import pymongo
+import psycopg2
 
 # Relaciones entre código postal y distrito (añadidos los nuevos códigos postales para completar la relación)
 data = {
@@ -53,10 +54,40 @@ for district_id, total_frecuencia in district_frequencies.items():
     normalized_frequency = round(total_frecuencia / frecuencia_max, 2)
     district_normalized.append([district_id, total_frecuencia, normalized_frequency])
 
-# Imprimir la tabla normalizada
-print("\nTabla con frecuencia normalizada por distrito:")
+# Conexión a PostgreSQL
+conn = psycopg2.connect(
+    user="postgres",
+    password="Welcome01",
+    host="localhost",
+    port=5432
+)
+cursor = conn.cursor()
+
+# Crear tabla de resultados o añadir columna si no existe
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS public."centros_educativos" (
+        district_id INTEGER PRIMARY KEY,
+        total_centros_educativos INTEGER NOT NULL,
+        normalized_total_centros_educativos FLOAT
+    );
+""")
+
+# Insertar los resultados en la base de datos
 for item in district_normalized:
-    print(f"Distrito: {item[0]}, Frecuencia Total: {item[1]}, Frecuencia Normalizada: {item[2]}")
+    cursor.execute("""
+        INSERT INTO public."centros_educativos" (district_id, total_centros_educativos, normalized_total_centros_educativos)
+        VALUES (%s, %s, %s)
+        ON CONFLICT (district_id) DO UPDATE
+        SET total_centros_educativos = EXCLUDED.total_centros_educativos,
+            normalized_total_centros_educativos = EXCLUDED.normalized_total_centros_educativos;
+    """, (item[0], item[1], item[2]))
+
+# Confirmar los cambios en la base de datos
+conn.commit()
+
+# Cerrar la conexión
+cursor.close()
+conn.close()
 
 # Mensaje de éxito
-print("Frecuencia normalizada por distrito calculada correctamente.")
+print("La información se ha insertado correctamente en la base de datos.")
