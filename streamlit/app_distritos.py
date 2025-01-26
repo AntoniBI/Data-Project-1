@@ -66,7 +66,7 @@ def main():
     geojson_layer = pdk.Layer(
         "GeoJsonLayer",
         data=data,
-        get_fill_color=[200, 0, 0, 100],  # Color rojo con opacidad
+        get_fill_color=[169, 169, 169, 100],  # Color rojo con opacidad
         get_line_color=[0, 0, 0, 200],  # Bordes negros más opacos
         line_width_min_pixels=1,
         pickable=True,
@@ -102,3 +102,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
