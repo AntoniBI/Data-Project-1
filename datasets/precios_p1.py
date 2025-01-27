@@ -5,25 +5,24 @@ import pandas as pd
 # Datos a insertar
 data = [
     {"distrito": "Ciutat Vella", "district_id": 1, "precio_max": 2101.5, "precio_min": 1500, "precio_medio": 1900},
-    {"distrito": "Pla del Real", "district_id": 2, "precio_max": 2046.8, "precio_min": 1400, "precio_medio": 1800},
-    {"distrito": "L'Eixample", "district_id": 3, "precio_max": 2028.0, "precio_min": 1350, "precio_medio": 1850},
-    {"distrito": "Quatre Carreres", "district_id": 4, "precio_max": 1800, "precio_min": 1200, "precio_medio": 1500},
+    {"distrito": "Eixample", "district_id": 2, "precio_max": 2046.8, "precio_min": 1400, "precio_medio": 1800},
+    {"distrito": "Extramura", "district_id": 3, "precio_max": 2028.0, "precio_min": 1350, "precio_medio": 1850},
+    {"distrito": "Campanar", "district_id": 4, "precio_max": 1800, "precio_min": 1200, "precio_medio": 1500},
     {"distrito": "La Saïdia", "district_id": 5, "precio_max": 1750, "precio_min": 1100, "precio_medio": 1375},
-    {"distrito": "Benimaclet", "district_id": 6, "precio_max": 1600, "precio_min": 1000, "precio_medio": 1250},
-    {"distrito": "Algirós", "district_id": 7, "precio_max": 1700, "precio_min": 1050, "precio_medio": 1275},
-    {"distrito": "Poblats Marítims", "district_id": 8, "precio_max": 1650, "precio_min": 1050, "precio_medio": 1350},
-    {"distrito": "Patraix", "district_id": 9, "precio_max": 1500, "precio_min": 1000, "precio_medio": 1250},
-    {"distrito": "Campanar", "district_id": 10, "precio_max": 1800, "precio_min": 1200, "precio_medio": 1450},
-    {"distrito": "Benicalap", "district_id": 11, "precio_max": 1600, "precio_min": 1100, "precio_medio": 1300},
-    {"distrito": "La Xerea", "district_id": 12, "precio_max": 1700, "precio_min": 1200, "precio_medio": 1400},
-    {"distrito": "La Roqueta", "district_id": 13, "precio_max": 1600, "precio_min": 1100, "precio_medio": 1325},
-    {"distrito": "El Carme", "district_id": 14, "precio_max": 1800, "precio_min": 1200, "precio_medio": 1450},
-    {"distrito": "El Pla del Remei", "district_id": 15, "precio_max": 2000, "precio_min": 1300, "precio_medio": 1750},
-    {"distrito": "La Creu del Grau", "district_id": 16, "precio_max": 1700, "precio_min": 1100, "precio_medio": 1400},
-    {"distrito": "El Cabanyal", "district_id": 17, "precio_max": 1600, "precio_min": 1050, "precio_medio": 1300},
-    {"distrito": "Malva-rosa", "district_id": 18, "precio_max": 1500, "precio_min": 1000, "precio_medio": 1225},
-    {"distrito": "El Grau", "district_id": 19, "precio_max": 1800, "precio_min": 1200, "precio_medio": 1475},
-    {"distrito": "La Malva-rosa", "district_id": 20, "precio_max": 1500, "precio_min": 1000, "precio_medio": 1225}
+    {"distrito": "El Pla del Real", "district_id": 6, "precio_max": 1600, "precio_min": 1000, "precio_medio": 1250},
+    {"distrito": "L'olivereta", "district_id": 7, "precio_max": 1700, "precio_min": 1050, "precio_medio": 1275},
+    {"distrito": "Patraix", "district_id": 8, "precio_max": 1650, "precio_min": 1050, "precio_medio": 1350},
+    {"distrito": "Jesus", "district_id": 9, "precio_max": 1500, "precio_min": 1000, "precio_medio": 1250},
+    {"distrito": "Quatre Carreres", "district_id": 10, "precio_max": 1800, "precio_min": 1200, "precio_medio": 1450},
+    {"distrito": "Poblats Martimis", "district_id": 11, "precio_max": 1600, "precio_min": 1100, "precio_medio": 1300},
+    {"distrito": "Camins al Grau", "district_id": 12, "precio_max": 1700, "precio_min": 1200, "precio_medio": 1400},
+    {"distrito": "Algiros", "district_id": 13, "precio_max": 1600, "precio_min": 1100, "precio_medio": 1325},
+    {"distrito": "Benimaclet", "district_id": 14, "precio_max": 1800, "precio_min": 1200, "precio_medio": 1450},
+    {"distrito": "Rascanya", "district_id": 15, "precio_max": 2000, "precio_min": 1300, "precio_medio": 1750},
+    {"distrito": "Benicalap", "district_id": 16, "precio_max": 1700, "precio_min": 1100, "precio_medio": 1400},
+    {"distrito": "Pobles del Nord", "district_id": 17, "precio_max": 1600, "precio_min": 1050, "precio_medio": 1300},
+    {"distrito": "Pobles de l'Oest", "district_id": 18, "precio_max": 1500, "precio_min": 1000, "precio_medio": 1225},
+    {"distrito": "Pobles del Sud", "district_id": 19, "precio_max": 1800, "precio_min": 1200, "precio_medio": 1475}  
 ]
 
 # Convertir los datos a un DataFrame de pandas
