@@ -15,6 +15,25 @@ El sistema se basa en la extracción de datos desde APIs mediante NiFi, que lueg
 ## 🛠️ **Requisitos Previos**
 1. Tener instalados Docker y Docker Compose.
 2. Apache NiFi.
-3. MongoDB.
-4. PostgreSQL.
-5. Sistema operativo compatible: Windows, Linux o macOS.
+3. Python
+4. MongoDB.
+5. PostgreSQL.
+6. Sistema operativo compatible: Windows, Linux o macOS.
+
+## 🧑‍💻 **Tecnologías y Herramientas Utilizadas**
+
+### **Python**
+- **pandas**: Para el análisis y transformación de datos.
+- **psycopg2**: Para la conexión y transferencia de datos entre Python y PostgreSQL.
+- **pymongo**: Para interactuar con la base de datos MongoDB.
+- **Streamlit**: Para crear una interfaz web interactiva que permita visualizar y explorar los datos.
+
+### **Bases de Datos**
+- **MongoDB**: Base de datos NoSQL utilizada para almacenar datos extraídos desde APIs.
+- **PostgreSQL con PostGIS**: PostgreSQL se utiliza como base de datos relacional para almacenar datos estructurados. La extensión **PostGIS** permite trabajar con datos espaciales.
+
+### **Docker**
+- Contenerización del entorno para garantizar reproducibilidad y facilitar la implementación.
+
+### **Apache NiFi**
+- Herramienta de integración utilizada para extraer datos desde la API pública y almacenarlos automáticamente en MongoDB. 

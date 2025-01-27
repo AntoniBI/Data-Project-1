@@ -1,5 +1,5 @@
 #Instalamos la imagen de python 3.10 en version slim para reducir el tamaño de la imagen
-FROM python:3.10-slim
+FROM python:3.11-slim
 
 #Establecemos el directorio de trabajo
 WORKDIR /app
