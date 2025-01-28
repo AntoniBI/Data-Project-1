@@ -1,0 +1,9 @@
+FROM python:3.9-slim
+WORKDIR /app
+COPY . /app
+# Instalar dependencias del sistema para psycopg2
+RUN apt-get update && apt-get install -y \
+    libpq-dev gcc && \
+    rm -rf /var/lib/apt/lists/*
+RUN pip install --no-cache-dir -r requirements.txt
+ENTRYPOINT ["sh", "-c", "python distritos.py; python precios_p1.py; python postal_distrito.py; python hospitales_norm.py; python estaciones_norm.py; python educativos_norm.py"]

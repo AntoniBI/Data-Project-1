@@ -1,6 +1,0 @@
-pymongo
-psycopg2
-pandas
-pydeck
-json
-streamlit
