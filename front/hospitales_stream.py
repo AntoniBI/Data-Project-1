@@ -4,8 +4,7 @@ import pandas as pd
 # Conexión a PostgreSQL
 def connect_to_db():
     try:
-        conn = psycopg2.connect(
-            dbname="postgres",   # Reemplaza con tu base de datos
+        conn = psycopg2.connect(   
             user="postgres",     # Reemplaza con tu usuario
             password="Welcome01", # Reemplaza con tu contraseña
             host="localhost",    # O la IP de tu servidor de base de datos
