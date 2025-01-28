@@ -4,7 +4,6 @@ import pandas as pd
 POSTGRES_CONFIG = {
     "host": "localhost",
     "port": 5432,
-    "database": "postgres",
     "user": "postgres",
     "password": "Welcome01"
 }
