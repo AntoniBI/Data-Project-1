@@ -8,10 +8,9 @@ services:
       - 8443:8443
     environment:
       - SINGLE_USER_CREDENTIALS_USERNAME=admin
-      - SINGLE_USER_CREDENTIALS_PASSWORD=password
+      - SINGLE_USER_CREDENTIALS_PASSWORD=password1234
     volumes:
-      - ./data/flow.xml:/opt/nifi/nifi-current/conf/flow.xml 
-    # Es necesario poner el fichero en gz y bajar toda la config mapeada
+      - ./data-nifi/flow.xml.gz:/opt/nifi/nifi-current/conf/flow.xml.gz
     user: "0:0" 
     networks:
       - dataproject1
@@ -48,7 +47,7 @@ services:
   
   postgres:
     container_name: postgres_data_project1
-    image: postgis/postgis:12-3.1 # Imagen de PostgreSQL con PostGIS
+    image: postgis/postgis:12-3.1 
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Welcome01
@@ -73,6 +72,31 @@ services:
       - 8082:80
     depends_on:
       - postgres
+    networks:
+      - dataproject1
+
+  back:
+    build: ./back
+    container_name: back
+    restart: always
+    depends_on:
+      - mongo
+      - postgres
+    environment:
+      - MONGO_URI=mongodb://root:example@mongo:27017/
+      - POSTGRES_URI=postgresql://postgres:Welcome01@postgres:5432/postgres_data_project1
+    networks:
+      - dataproject1
+
+  front:
+    build: ./front
+    container_name: front
+    restart: always
+    depends_on:
+      - postgres
+      - back
+    environment:
+      - POSTGRES_URI=postgresql://admin:admin@postgres:5432/postgres_data_project1
     networks:
       - dataproject1
 
