@@ -42,6 +42,12 @@ def main():
     st.sidebar.header("Filtro de Precios")
     precio_min = st.sidebar.slider("Precio mínimo", min_value=500, max_value=2000, value=800, step=50)
     precio_max = st.sidebar.slider("Precio máximo", min_value=500, max_value=2000, value=1200, step=50)
+
+    # Validación del rango de precios
+    if precio_min > precio_max:
+        st.sidebar.error("El precio mínimo no puede ser mayor que el precio máximo. Ajusta los valores.")
+        st.stop()
+
     precios_data = load_precios_vivienda()
     precios_filtrados = filtrar_distritos_por_precio(precios_data, precio_min, precio_max)
 
