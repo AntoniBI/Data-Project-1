@@ -10,7 +10,7 @@ services:
       - SINGLE_USER_CREDENTIALS_USERNAME=admin
       - SINGLE_USER_CREDENTIALS_PASSWORD=password1234
     volumes:
-      - ./data-nifi/flow.xml.gz:/opt/nifi/nifi-current/conf/flow.xml.gz
+      - ./nifi:/tmp/data
     user: "0:0" 
     networks:
       - dataproject1
@@ -78,7 +78,7 @@ services:
   back:
     build: ./back
     container_name: back
-    restart: always
+    restart: no
     depends_on:
       - mongo
       - postgres
@@ -87,11 +87,11 @@ services:
       - POSTGRES_URI=postgresql://postgres:Welcome01@postgres:5432/postgres_data_project1
     networks:
       - dataproject1
-
+ 
   front:
     build: ./front
     container_name: front
-    restart: always
+    restart: no
     depends_on:
       - postgres
       - back
@@ -108,4 +108,4 @@ volumes:
   postgres:  # Volumen para persistir los datos de PostgreSQL
   pgadmin:   # Volumen para persistir los datos de PgAdmin
   data:      # Volumen para persistir los datos de MongoDB
-  data-nifi: # Volumen para persistir los datos de NiFi
+  nifi:      # Volumen para persistir los datos de NiFi
