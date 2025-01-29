@@ -33,14 +33,13 @@ def calcular_color(distrito_id, top_distritos, cumple_precio):
 
 def main():
     st.title("Mapa por Distritos en Valencia")
-    st.write("Aplicación para visualizar distritos en función de precios, hospitales, estaciones y centros educativos.")
 
     # Cargar datos de distritos
     distritos_data = load_distritos()
 
     # Filtro de precios
-    st.sidebar.header("Filtro de Precios")
-    precio_min = st.sidebar.slider("Precio mínimo", min_value=500, max_value=4500, value=800, step=50)
+    st.sidebar.header("Filtrar por Precios de Vivienda")
+    precio_min = st.sidebar.slider("Precio mínimo", min_value=500, max_value=4500, value=1150, step=50)
     precio_max = st.sidebar.slider("Precio máximo", min_value=500, max_value=4500, value=1200, step=50)
 
     # Validación del rango de precios
@@ -51,30 +50,18 @@ def main():
     precios_data = load_precios_vivienda()
     precios_filtrados = filtrar_distritos_por_precio(precios_data, precio_min, precio_max)
 
-    # Filtro de hospitales
-    st.sidebar.header("Filtro de Hospitales")
-    importancia_hospitales = st.sidebar.selectbox(
-        "Importancia de hospitales",
-        ["Muy poca importancia", "Poca importancia", "Importancia media", "Importancia alta"]
-    )
+    # Filtros de importancia
+    st.sidebar.header("Otros datos de interés")
+    importancia_hospitales = st.sidebar.selectbox("¿Son muy importantes los hospitales?",["Muy poca importancia", "Poca importancia", "Importancia media", "Importancia alta"])
+    importancia_estaciones = st.sidebar.selectbox("¿Son muy importantes las estaciones?",["Muy poca importancia", "Poca importancia", "Importancia media", "Importancia alta"])
+    importancia_educativos = st.sidebar.selectbox( "¿Son muy importantes los centros educativos?",["Muy poca importancia", "Poca importancia", "Importancia media", "Importancia alta"])
+    
     hospitales_data = get_hospitales_data()
     hospitales_data = calcular_puntuacion_hospitales(hospitales_data, importancia_hospitales)
 
-    # Filtro de estaciones
-    st.sidebar.header("Filtro de Estaciones")
-    importancia_estaciones = st.sidebar.selectbox(
-        "Importancia de estaciones",
-        ["Muy poca importancia", "Poca importancia", "Importancia media", "Importancia alta"]
-    )
     estaciones_data = get_estaciones_data()
     estaciones_data = calcular_puntuacion_estaciones(estaciones_data, importancia_estaciones)
-
-    # Filtro de educativos
-    st.sidebar.header("Filtro de Centros Educativos")
-    importancia_educativos = st.sidebar.selectbox(
-        "Importancia de centros educativos",
-        ["Muy poca importancia", "Poca importancia", "Importancia media", "Importancia alta"]
-    )
+ 
     educativos_data = get_educativos_data()
     educativos_data = calcular_puntuacion_educativos(educativos_data, importancia_educativos)
 
@@ -140,11 +127,10 @@ def main():
     tooltip = {
         "html": """
         <b>Distrito:</b> {nombre_distrito}<br>
-        <b>Precio medio:</b> {precio_medio}<br>
-        <b>Hospitales:</b> {total_hospitales}<br>
-        <b>Estaciones:</b> {total_stops}<br>
-        <b>Educativos:</b> {total_centros_educativos}<br>
-        <b>Puntuación Total:</b> {puntuacion_total}
+        <b>Codigo de Distrito:</b> {district_id}<br>
+        <b>Centros Sanitarios:</b> {total_hospitales}<br>
+        <b>Estaciones Transporte Publico:</b> {total_stops}<br>
+        <b>Centros Educativos:</b> {total_centros_educativos}
         """,
         "style": {"backgroundColor": "white", "color": "black"}
     }
@@ -158,12 +144,13 @@ def main():
     )
     st.pydeck_chart(r)
 
-    st.subheader("Precio medio de viviendas por distrito dentro del rango seleccionado")
-    if not distritos_filtrados.empty:
-        tabla_data = distritos_filtrados[["nombre_distrito", "precio_medio"]].drop_duplicates().sort_values(by="precio_medio", ascending=False)
-        st.table(tabla_data)
-    else:
-        st.write("No hay distritos que cumplan con el rango de precios seleccionado.")
+    with st.container():
+        col1, col2, col3, col4, col5 = st.columns(5)
+        col1.markdown("<div style='background-color:#008000;width:20px;height:20px;display:inline-block'></div> Mejor distrito", unsafe_allow_html=True)
+        col2.markdown("<div style='background-color:#00C800;width:20px;height:20px;display:inline-block'></div> Segundo mejor distrito", unsafe_allow_html=True)
+        col3.markdown("<div style='background-color:#00FF00;width:20px;height:20px;display:inline-block'></div> Tercer mejor distrito", unsafe_allow_html=True)
+        col4.markdown("<div style='background-color:#90EE90;width:20px;height:20px;display:inline-block'></div> Cumple precio establecido", unsafe_allow_html=True)
+        col5.markdown("<div style='background-color:#A9A9A9;width:20px;height:20px;display:inline-block'></div> No cumple precio establecido", unsafe_allow_html=True)
 
     st.subheader("Nuestras recomendaciones")
     if top_distritos:
@@ -174,15 +161,14 @@ def main():
     else:
         st.write("No se encontraron distritos recomendados según tus preferencias.")
 
+    st.subheader("Precio medio de viviendas para tu seleccion")
+    if not distritos_filtrados.empty:
+        tabla_data = distritos_filtrados[["nombre_distrito", "precio_medio"]].drop_duplicates().sort_values(by="precio_medio", ascending=False)
+        st.table(tabla_data)
+    else:
+        st.write("No hay distritos que cumplan con el rango de precios seleccionado.")
+
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-
-
 
 
