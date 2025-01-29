@@ -37,3 +37,5 @@ El sistema se basa en la extracción de datos desde APIs mediante NiFi, que lueg
 
 ### **Apache NiFi**
 - Herramienta de integración utilizada para extraer datos desde la API pública y almacenarlos automáticamente en MongoDB. 
+
+-
