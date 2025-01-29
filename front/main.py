@@ -127,6 +127,7 @@ def main():
     tooltip = {
         "html": """
         <b>Distrito:</b> {nombre_distrito}<br>
+        <b>Codigo de Distrito:</b> {district_id}<br>
         <b>Centros Sanitarios:</b> {total_hospitales}<br>
         <b>Estaciones Transporte Publico:</b> {total_stops}<br>
         <b>Centros Educativos:</b> {total_centros_educativos}
