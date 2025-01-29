@@ -3,7 +3,7 @@ import psycopg2
 import pandas as pd
 
 # Conexión a MongoDB
-myclient = pymongo.MongoClient("mongodb://root:example@localhost:27017")
+myclient = pymongo.MongoClient("mongodb://root:example@mongo:27017")
 mydb = myclient["dataproject1"]
 mycol = mydb["hospitales"]
 
@@ -31,7 +31,7 @@ totales_por_distrito["total_hospitales_normalizado"] = totales_por_distrito["tot
 conn = psycopg2.connect(
     user="postgres",
     password="Welcome01",
-    host="localhost",
+    host="postgres",
     port=5432
 )
 cursor = conn.cursor()

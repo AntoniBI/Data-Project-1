@@ -39,7 +39,7 @@ services:
   
   postgres:
     container_name: postgres_container
-    image: postgis/postgis:12-3.1
+    image: postgis/postgis:13-3.1
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Welcome01
@@ -65,23 +65,25 @@ services:
   back:
     build: ./back
     container_name: back
-    restart: no
+    #restart: no
     depends_on:
       - mongo
       - postgres
-    environment:
-      - MONGO_URI=mongodb://root:example@mongo:27017/
-      - POSTGRES_URI=postgresql://postgres:Welcome01@postgres:5432/postgres_data_project1
+    #environment:
+    #  - MONGO_URI=mongodb://root:example@mongo:27017/
+    #  - POSTGRES_URI=postgresql://postgres:Welcome01@postgres:5432/postgres_data_project1
  
   front:
     build: ./front
     container_name: front
-    restart: no
+    #restart: no
     depends_on:
       - postgres
       - back
-    environment:
-      - POSTGRES_URI=postgresql://admin:admin@postgres:5432/postgres_data_project1
+    ports:
+      - "8501:8501"  # ✅ Exponiendo correctamente el puerto de Streamlit
+    #environment:
+    #  - POSTGRES_URI=postgresql://postgres:Welcome01@postgres:5432/postgres_data_project1
  
 volumes:
   data:
