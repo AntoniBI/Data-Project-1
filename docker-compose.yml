@@ -38,11 +38,11 @@ services:
 
   
   postgres:
-    container_name: postgres_data
-    image: postgis/postgis:13-3.1
+    container_name: postgres_container
+    image: postgis/postgis:12-3.1
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-Welcome01}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Welcome01
       PGDATA: /data/postgres
     volumes:
        - postgres:/data/postgres
@@ -51,7 +51,7 @@ services:
     restart: unless-stopped
    
   pgadmin:
-    container_name: pgadmin_container_data
+    container_name: pgadmin_container
     image: dpage/pgadmin4:4.16
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
