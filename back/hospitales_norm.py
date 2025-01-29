@@ -61,4 +61,4 @@ cursor.close()
 conn.close()
 
 # Mensaje de éxito
-print("Totales por distrito insertados correctamente con normalización.")
+print("✅ Datos cargados correctamente a PostgreSQL")

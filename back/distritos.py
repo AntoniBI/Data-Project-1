@@ -49,4 +49,4 @@ cursor.close()
 conn.close()
 
 # Mensaje de éxito
-print("Datos insertados correctamente.")
+print("✅ Datos cargados correctamente a PostgreSQL")

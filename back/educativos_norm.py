@@ -90,4 +90,4 @@ cursor.close()
 conn.close()
 
 # Mensaje de éxito
-print("La información se ha insertado correctamente en la base de datos.")
+print("✅ Datos cargados correctamente a PostgreSQL")
