@@ -61,17 +61,16 @@ services:
       - dataproject1
 
   pgadmin:
-    container_name: pgadmin_data_project1
-    image: dpage/pgadmin4
+    container_name: pgadmin_data_project
+    image: dpage/pgadmin4:4.16
     environment:
-      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
-      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
     volumes:
-      - pgadmin:/var/lib/pgadmin
+       - pgadmin:/root/.pgadmin
     ports:
-      - 8082:80
-    depends_on:
-      - postgres
+      - "${PGADMIN_PORT:-5050}:80"
+    restart: unless-stopped
     networks:
       - dataproject1
 
