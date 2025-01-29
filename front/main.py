@@ -1,7 +1,7 @@
 import streamlit as st
 import pydeck as pdk
 import pandas as pd
-from precio_vivienda import load_precios_vivienda, filtrar_distritos_por_precio
+from precio_vivienda_stream import load_precios_vivienda, filtrar_distritos_por_precio
 from hospitales_stream import get_hospitales_data, calcular_puntuacion_hospitales
 from distritos_stream import load_distritos
 from estaciones_stream import get_estaciones_data, calcular_puntuacion_estaciones

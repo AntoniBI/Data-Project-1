@@ -77,4 +77,4 @@ cursor.close()
 conn.close()
 
 # Mensaje de éxito
-print("Tabla de resultados creada correctamente con normalización.")
+print("✅ Datos cargados correctamente a PostgreSQL")
