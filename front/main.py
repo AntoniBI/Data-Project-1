@@ -40,8 +40,8 @@ def main():
 
     # Filtro de precios
     st.sidebar.header("Filtro de Precios")
-    precio_min = st.sidebar.slider("Precio mínimo", min_value=500, max_value=2000, value=800, step=50)
-    precio_max = st.sidebar.slider("Precio máximo", min_value=500, max_value=2000, value=1200, step=50)
+    precio_min = st.sidebar.slider("Precio mínimo", min_value=500, max_value=4500, value=800, step=50)
+    precio_max = st.sidebar.slider("Precio máximo", min_value=500, max_value=4500, value=1200, step=50)
 
     # Validación del rango de precios
     if precio_min > precio_max:
@@ -158,14 +158,31 @@ def main():
     )
     st.pydeck_chart(r)
 
-    # Crear gráfico de barras con precios medios por distrito
     st.subheader("Precio medio de viviendas por distrito dentro del rango seleccionado")
     if not distritos_filtrados.empty:
-        grafico_data = distritos_filtrados[["nombre_distrito", "precio_medio"]].sort_values(by="precio_medio", ascending=False)
-        st.bar_chart(data=grafico_data.set_index("nombre_distrito"))
+        tabla_data = distritos_filtrados[["nombre_distrito", "precio_medio"]].drop_duplicates().sort_values(by="precio_medio", ascending=False)
+        st.table(tabla_data)
     else:
         st.write("No hay distritos que cumplan con el rango de precios seleccionado.")
 
+    st.subheader("Nuestras recomendaciones")
+    if top_distritos:
+        nombres_top = distritos_filtrados[distritos_filtrados["district_id"].isin(top_distritos)]["nombre_distrito"].unique()
+        st.write("Basándonos en tus preferencias, te recomendamos vivir en los siguientes distritos:")
+        for nombre in nombres_top:
+            st.write(f"- {nombre}")
+    else:
+        st.write("No se encontraron distritos recomendados según tus preferencias.")
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
+
+
+
+
