@@ -3,3 +3,4 @@ pydeck
 pymongo
 psycopg2
 pandas
+pg8000

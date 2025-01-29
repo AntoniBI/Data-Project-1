@@ -4,7 +4,8 @@ import psycopg2
 from psycopg2 import sql
 
 # Conectar a MongoDB
-MONGO_URI = "mongodb://root:example@localhost:27017"
+MONGO_URI = "mongodb://root:example@mongo:27017"
+
 DB_NAME = "dataproject1"
 COLLECTION_NAME = "preciosviv"
 
@@ -61,7 +62,7 @@ try:
     conn = psycopg2.connect(
         user="postgres",
         password="Welcome01",
-        host="localhost",
+        host="postgres",
         port="5432",
     )
     cur = conn.cursor()
