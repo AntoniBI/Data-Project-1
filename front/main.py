@@ -158,14 +158,181 @@ def main():
     )
     st.pydeck_chart(r)
 
-    # Crear gráfico de barras con precios medios por distrito
     st.subheader("Precio medio de viviendas por distrito dentro del rango seleccionado")
     if not distritos_filtrados.empty:
-        grafico_data = distritos_filtrados[["nombre_distrito", "precio_medio"]].sort_values(by="precio_medio", ascending=False)
-        st.bar_chart(data=grafico_data.set_index("nombre_distrito"))
+        tabla_data = distritos_filtrados[["nombre_distrito", "precio_medio"]].drop_duplicates().sort_values(by="precio_medio", ascending=False)
+        st.table(tabla_data)
     else:
         st.write("No hay distritos que cumplan con el rango de precios seleccionado.")
 
+    st.subheader("Nuestras recomendaciones")
+    if top_distritos:
+        nombres_top = distritos_filtrados[distritos_filtrados["district_id"].isin(top_distritos)]["nombre_distrito"].unique()
+        st.write("Basándonos en tus preferencias, te recomendamos vivir en los siguientes distritos:")
+        for nombre in nombres_top:
+            st.write(f"- {nombre}")
+    else:
+        st.write("No se encontraron distritos recomendados según tus preferencias.")
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# import streamlit as st
+# import pydeck as pdk
+# import pandas as pd
+# from precio_vivienda_stream import load_precios_vivienda, filtrar_distritos_por_precio
+# from hospitales_stream import get_hospitales_data, calcular_puntuacion_hospitales
+# from distritos_stream import load_distritos
+# from estaciones_stream import get_estaciones_data, calcular_puntuacion_estaciones
+# from educativos_stream import get_educativos_data, calcular_puntuacion_educativos
+
+# def calcular_color(distrito_id, top_distritos, cumple_precio):
+#     if distrito_id in top_distritos:
+#         rank = top_distritos.index(distrito_id)
+#         colores_top = [
+#             [0, 128, 0, 150],  
+#             [0, 200, 0, 150],  
+#             [0, 255, 0, 150],  
+#         ]
+#         return colores_top[rank]
+#     elif cumple_precio:
+#         return [144, 238, 144, 150]  
+#     else:
+#         return [169, 169, 169, 100]  
+
+# def main():
+#     st.title("Mapa por Distritos en Valencia")
+#     st.write("Aplicación para visualizar distritos en función de precios, hospitales, estaciones y centros educativos.")
+
+#     distritos_data = load_distritos()
+    
+#     st.sidebar.header("Filtro de Precios")
+#     precio_min = st.sidebar.slider("Precio mínimo", min_value=500, max_value=4500, value=800, step=50)
+#     precio_max = st.sidebar.slider("Precio máximo", min_value=500, max_value=4500, value=1200, step=50)
+    
+#     if precio_min > precio_max:
+#         st.sidebar.error("El precio mínimo no puede ser mayor que el precio máximo. Ajusta los valores.")
+#         st.stop()
+    
+#     precios_data = load_precios_vivienda()
+#     precios_filtrados = filtrar_distritos_por_precio(precios_data, precio_min, precio_max)
+    
+#     hospitales_data = get_hospitales_data()
+#     hospitales_data = calcular_puntuacion_hospitales(hospitales_data, "Importancia media")
+    
+#     estaciones_data = get_estaciones_data()
+#     estaciones_data = calcular_puntuacion_estaciones(estaciones_data, "Importancia media")
+    
+#     educativos_data = get_educativos_data()
+#     educativos_data = calcular_puntuacion_educativos(educativos_data, "Importancia media")
+    
+#     distritos_data = distritos_data.merge(precios_filtrados, on="district_id", how="left")
+#     distritos_data = distritos_data.merge(hospitales_data, on="district_id", how="left")
+#     distritos_data = distritos_data.merge(estaciones_data, on="district_id", how="left")
+#     distritos_data = distritos_data.merge(educativos_data, on="district_id", how="left")
+    
+#     distritos_data.fillna(0, inplace=True)
+    
+#     distritos_data["puntuacion_total"] = (
+#         distritos_data["puntuacion_hospitales"] +
+#         distritos_data["puntuacion_estaciones"] +
+#         distritos_data["puntuacion_educativos"]
+#     )
+    
+#     distritos_filtrados = distritos_data[
+#         (distritos_data["precio_medio"] >= precio_min) &
+#         (distritos_data["precio_medio"] <= precio_max)
+#     ]
+    
+#     top_distritos = distritos_filtrados.nlargest(3, "puntuacion_total")["district_id"].tolist()
+    
+#     distritos_data["color"] = distritos_data.apply(
+#         lambda row: calcular_color(
+#             row["district_id"],
+#             top_distritos,
+#             row["precio_medio"] >= precio_min and row["precio_medio"] <= precio_max
+#         ),
+#         axis=1
+#     )
+    
+#     geojson_layer = pdk.Layer(
+#         "GeoJsonLayer",
+#         data=distritos_data,
+#         get_fill_color="color",
+#         get_line_color=[0, 0, 0, 200],
+#         line_width_min_pixels=1,
+#         pickable=True,
+#     )
+    
+#     view_state = pdk.ViewState(
+#         latitude=39.4699,
+#         longitude=-0.3763,
+#         zoom=12,
+#         pitch=0
+#     )
+    
+#     mapbox_style = "mapbox://styles/mapbox/streets-v11"
+    
+#     tooltip = {
+#         "html": """
+#         <b>Distrito:</b> {nombre_distrito}<br>
+#         <b>Precio medio:</b> {precio_medio}<br>
+#         <b>Hospitales:</b> {total_hospitales}<br>
+#         <b>Estaciones:</b> {total_stops}<br>
+#         <b>Educativos:</b> {total_centros_educativos}<br>
+#         <b>Puntuación Total:</b> {puntuacion_total}
+#         """,
+#         "style": {"backgroundColor": "white", "color": "black"}
+#     }
+    
+#     r = pdk.Deck(
+#         layers=[geojson_layer],
+#         initial_view_state=view_state,
+#         tooltip=tooltip,
+#         map_style=mapbox_style  
+#     )
+#     st.pydeck_chart(r)
+    
+#     st.subheader("Precio medio de viviendas por distrito dentro del rango seleccionado")
+#     if not distritos_filtrados.empty:
+#         tabla_data = distritos_filtrados[["nombre_distrito", "precio_medio"]].drop_duplicates().sort_values(by="precio_medio", ascending=False)
+#         st.table(tabla_data)
+#     else:
+#         st.write("No hay distritos que cumplan con el rango de precios seleccionado.")
+    
+#     st.subheader("Nuestras recomendaciones")
+#     if top_distritos:
+#         nombres_top = distritos_filtrados[distritos_filtrados["district_id"].isin(top_distritos)]["nombre_distrito"].unique()
+#         st.write("Basándonos en tus preferencias, te recomendamos vivir en los siguientes distritos:")
+#         for nombre in nombres_top:
+#             st.write(f"- {nombre}")
+#     else:
+#         st.write("No se encontraron distritos recomendados según tus preferencias.")
+
+# if __name__ == "__main__":
+#     main()
