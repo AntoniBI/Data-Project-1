@@ -61,8 +61,28 @@ services:
     ports:
       - "${PGADMIN_PORT:-5050}:80"
     restart: unless-stopped
- 
 
+  back:
+    build: ./back
+    container_name: back
+    restart: no
+    depends_on:
+      - mongo
+      - postgres
+    environment:
+      - MONGO_URI=mongodb://root:example@mongo:27017/
+      - POSTGRES_URI=postgresql://postgres:Welcome01@postgres:5432/postgres_data_project1
+ 
+  front:
+    build: ./front
+    container_name: front
+    restart: no
+    depends_on:
+      - postgres
+      - back
+    environment:
+      - POSTGRES_URI=postgresql://admin:admin@postgres:5432/postgres_data_project1
+ 
 volumes:
   data:
   postgres:
