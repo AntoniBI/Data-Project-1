@@ -69,3 +69,20 @@ El front-end se comunica con el back-end para obtener los datos procesados y pre
 
 
 
+## 🚀 **Cómo Iniciar el Servicio**
+1. Inicia los servicios principales ejecutando:
+   ```bash
+   docker compose up -d nifi mongo mongo-express postgres pgadmin
+   ```
+2. Accede a Apache NiFi en el navegador e importa el template correspondiente.
+3. Inicia NiFi y permite que consuma únicamente un flowfile.
+4. Detén NiFi una vez finalizado el proceso.
+5. Levanta los contenedores del back y front con:
+   ```bash
+   docker compose up -d
+   ```
+6. Accede a la aplicación web en el navegador a través de:
+   ```
+   http://localhost:8501
+   ```
+
