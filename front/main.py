@@ -54,7 +54,7 @@ def main():
     # Filtros segun importancia de hospitales, estaciones y centros educativos
     st.sidebar.header("Otros datos de interés")
     importancia_hospitales = st.sidebar.selectbox("¿Son muy importantes los centros sanitarios?",["Muy poca importancia", "Poca importancia", "Importancia media", "Importancia alta"])
-    importancia_estaciones = st.sidebar.selectbox("¿Son muy importantes las estaciones de transporte publico?",["Muy poca importancia", "Poca importancia", "Importancia media", "Importancia alta"])
+    importancia_estaciones = st.sidebar.selectbox("¿Son muy importantes las estaciones de transporte público?",["Muy poca importancia", "Poca importancia", "Importancia media", "Importancia alta"])
     importancia_educativos = st.sidebar.selectbox( "¿Son muy importantes los centros educativos?",["Muy poca importancia", "Poca importancia", "Importancia media", "Importancia alta"])
     
     hospitales_data = get_hospitales_data()
@@ -130,7 +130,7 @@ def main():
         <b>Distrito:</b> {nombre_distrito}<br>
         <b>Codigo de Distrito:</b> {district_id}<br>
         <b>Centros Sanitarios:</b> {total_hospitales}<br>
-        <b>Estaciones Transporte Publico:</b> {total_stops}<br>
+        <b>Estaciones Transporte Público:</b> {total_stops}<br>
         <b>Centros Educativos:</b> {total_centros_educativos}
         """,
         "style": {"backgroundColor": "white", "color": "black"}
@@ -179,26 +179,19 @@ def main():
         st.write("No hay distritos que cumplan con el rango de precios seleccionado.")
 
 
-    st.subheader("Infraestructura en los distritos dentro del rango de precio")
+    st.subheader("Infraestructura en los distritos para tu selección")
     if not distritos_filtrados.empty:
     # Eliminar duplicados en los distritos, si los hay
         distritos_unicos = distritos_filtrados.drop_duplicates(subset=["district_id"])
     
     # Crear el gráfico para todos los distritos dentro del rango de precios
-        fig, ax = plt.subplots(figsize=(12, 6))  # Aumentar el tamaño de la figura para más espacio
+        fig, ax = plt.subplots(figsize=(12, 6)) 
         distritos_unicos.plot(x="nombre_distrito", y=["total_hospitales", "total_stops", "total_centros_educativos"], kind="bar", ax=ax)
-    
-    # Rotar las etiquetas del eje X
         plt.xticks(rotation=45, ha="right", fontsize=10)
-    
-    # Etiquetas y leyenda
         plt.xlabel("Distrito")
         plt.ylabel("Cantidad")
         plt.legend(["Centros Sanitarios", "Estaciones Transporte Publico", "Centros Educativos"], fontsize="small")
-    
-    # Ajuste para evitar que las etiquetas se corten
         plt.tight_layout()
-
         st.pyplot(fig)
     else:
         st.write("No se encontraron distritos dentro del rango de precios seleccionado.")
