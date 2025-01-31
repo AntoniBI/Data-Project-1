@@ -79,10 +79,10 @@ def main():
 
     # Calcular puntuación total (hospitales + estaciones + educativos)
     distritos_data["puntuacion_total"] = (
-        distritos_data["puntuacion_hospitales"] +
-        distritos_data["puntuacion_estaciones"] +
-        distritos_data["puntuacion_educativos"]
-    )
+        (distritos_data["puntuacion_hospitales"] * 0.33) +
+        (distritos_data["puntuacion_estaciones"] * 0.33) +
+        (distritos_data["puntuacion_educativos"] * 0.33)
+    ) * 10
 
     # Filtrar distritos que cumplen con el rango de precios
     distritos_filtrados = distritos_data[
@@ -131,7 +131,9 @@ def main():
         <b>Codigo de Distrito:</b> {district_id}<br>
         <b>Centros Sanitarios:</b> {total_hospitales}<br>
         <b>Estaciones Transporte Público:</b> {total_stops}<br>
-        <b>Centros Educativos:</b> {total_centros_educativos}
+        <b>Centros Educativos:</b> {total_centros_educativos}<br>
+        <b>Puntuación Total:</b> {puntuacion_total}
+
         """,
         "style": {"backgroundColor": "white", "color": "black"}
     }
