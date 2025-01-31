@@ -2,3 +2,4 @@ pymongo
 psycopg2
 pandas
 pg8000
+json
