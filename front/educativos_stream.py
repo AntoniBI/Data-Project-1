@@ -9,10 +9,10 @@ conn = pg8000.native.Connection("postgres", password="Welcome01", host="postgres
 def connect_to_db():
     try:
         conn = psycopg2.connect(
-            user="postgres",     # Reemplaza con tu usuario
-            password="Welcome01", # Reemplaza con tu contraseña
-            host="postgres",    # O la IP de tu servidor de base de datos
-            port="5432"          # El puerto de tu servidor de base de datos
+            user="postgres",     
+            password="Welcome01", 
+            host="postgres",    
+            port="5432"          
         )
         return conn
     except Exception as e:

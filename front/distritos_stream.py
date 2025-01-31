@@ -61,15 +61,15 @@ def dibujar_distritos(distritos_data, distritos_filtrados):
     geojson_layer = pdk.Layer(
         "GeoJsonLayer",
         data=distritos_data,
-        get_fill_color="color",  # Utiliza la columna "color" para definir el color de relleno
-        get_line_color=[0, 0, 0, 200],  # Bordes negros
+        get_fill_color="color",  
+        get_line_color=[0, 0, 0, 200],  
         line_width_min_pixels=1,
         pickable=True,
     )
 
     # Configuración inicial del mapa
     view_state = pdk.ViewState(
-        latitude=39.4699,  # Coordenadas aproximadas de Valencia
+        latitude=39.4699,  
         longitude=-0.3763,
         zoom=12,
         pitch=0
