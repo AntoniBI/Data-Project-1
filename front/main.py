@@ -39,9 +39,9 @@ def main():
     distritos_data = load_distritos()
 
     # Filtro de precios
-    st.sidebar.header("Filtrar por Precios de Vivienda")
-    precio_min = st.sidebar.slider("Precio mínimo", min_value=500, max_value=4500, value=1150, step=25)
-    precio_max = st.sidebar.slider("Precio máximo", min_value=500, max_value=4500, value=1200, step=25)
+    st.sidebar.header("Filtrar por Precios de Vivienda m2")
+    precio_min = st.sidebar.slider("Precio mínimo (€)", min_value=500, max_value=4500, value=1150, step=25)
+    precio_max = st.sidebar.slider("Precio máximo (€)", min_value=500, max_value=4500, value=1200, step=25)
 
     # Validación del rango de precios
     if precio_min > precio_max:
@@ -200,7 +200,7 @@ def main():
 
     # Mostrar los 3 mejores distritos con sus detalles 
 
-    st.subheader("Detalles de los 3 mejores distritos")
+    st.subheader("Insights para tu seleccion")
     if top_distritos:
 
     # Filtrar solo los distritos top y eliminar duplicados
