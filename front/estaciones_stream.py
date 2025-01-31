@@ -1,6 +1,5 @@
 import psycopg2
 import pandas as pd
-
 import sys
 import pg8000.native
 conn = pg8000.native.Connection("postgres", password="Welcome01", host="postgres")

@@ -95,5 +95,4 @@ conn.commit()
 cursor.close()
 conn.close()
 
-# Mensaje de éxito
-print("✅ Datos cargados correctamente a PostgreSQL")
+
