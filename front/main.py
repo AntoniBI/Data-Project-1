@@ -163,7 +163,7 @@ def main():
         st.write("No se encontraron distritos recomendados según tus preferencias.")
 
     # Crear el gráfico donde muestre el precio medio de vivienda, precio mínimo y precio máximo
-    st.subheader("Precio medio de viviendas para tu selección")
+    st.subheader("Precio medio m2 de viviendas para tu selección")
     if not distritos_filtrados.empty:
         plt.figure(figsize=(10, 5))
         distritos_unicos = distritos_filtrados.drop_duplicates(subset=["nombre_distrito"])
@@ -215,7 +215,7 @@ def main():
             total_educativos = distrito["total_centros_educativos"]
         
             st.write(f"### {nombre_distrito}")
-            st.write(f"  - **Precio Medio de Vivienda**: {precio_medio:,.2f} €")
+            st.write(f"  - **Precio Medio m2 de Vivienda**: {precio_medio:,.2f} €")
             st.write(f"  - **Centros Sanitarios**: {total_hospitales}")
             st.write(f"  - **Estaciones de Transporte Público**: {total_estaciones}")
             st.write(f"  - **Centros Educativos**: {total_educativos}")
