@@ -15,7 +15,7 @@ con = psycopg2.connect(
 )
 cursor = con.cursor()
 
-# Crear tabla hospitales
+# Crear tabla distritos
 cursor.execute("""
     CREATE TABLE IF NOT EXISTS public."distritos" (
         nombre_distrito VARCHAR(255),
