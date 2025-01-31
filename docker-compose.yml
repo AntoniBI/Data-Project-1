@@ -69,9 +69,6 @@ services:
     depends_on:
       - mongo
       - postgres
-    #environment:
-    #  - MONGO_URI=mongodb://root:example@mongo:27017/
-    #  - POSTGRES_URI=postgresql://postgres:Welcome01@postgres:5432/postgres_data_project1
  
   front:
     build: ./front
@@ -81,9 +78,7 @@ services:
       - postgres
       - back
     ports:
-      - "8501:8501"  # ✅ Exponiendo correctamente el puerto de Streamlit
-    #environment:
-    #  - POSTGRES_URI=postgresql://postgres:Welcome01@postgres:5432/postgres_data_project1
+      - "8501:8501"
  
 volumes:
   data:

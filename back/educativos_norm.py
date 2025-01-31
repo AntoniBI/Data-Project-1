@@ -1,7 +1,7 @@
 import pymongo
 import psycopg2
 
-# Relaciones entre código postal y distrito (añadidos los nuevos códigos postales para completar la relación)
+# Relaciones entre código postal y distrito
 data = {
     "codigo_postal": [
         46001, 46002, 46003, 46004, 46005, 46006, 46007, 46008, 46009, 46010, 46011, 46012,
@@ -15,7 +15,6 @@ data = {
     ]
 }
 
-# Conexión a MongoDB
 myclient = pymongo.MongoClient("mongodb://root:example@mongo:27017")
 mydb = myclient["dataproject1"]
 mycol = mydb["educativos"]
@@ -23,7 +22,7 @@ mycol = mydb["educativos"]
 # Crear una lista con todos los códigos postales
 todos_codpos = [int(document.get('codpos')) for document in mycol.find() if document.get('codpos')]
 
-# Crear una lista con el código postal, su frecuencia y el distrito
+# Crear una lista con el código postal y el distrito
 codpos_count = []
 if todos_codpos:
     for codpos in set(todos_codpos):
@@ -52,7 +51,7 @@ for district_id, default_value in default_values.items():
         district_frequencies[district_id] = default_value
 
 # Encontrar la frecuencia máxima entre los distritos
-frecuencia_max = max(district_frequencies.values()) if district_frequencies else 1
+frecuencia_max = max(district_frequencies.values())
 
 # Crear una tabla normalizada por distrito
 district_normalized = []
@@ -60,16 +59,15 @@ for district_id, total_frecuencia in district_frequencies.items():
     normalized_frequency = round(total_frecuencia / frecuencia_max, 2)
     district_normalized.append([district_id, total_frecuencia, normalized_frequency])
 
-# Conexión a PostgreSQL
-conn = psycopg2.connect(
+
+con = psycopg2.connect(
     user="postgres",
     password="Welcome01",
     host="postgres",
     port=5432
 )
-cursor = conn.cursor()
+cursor = con.cursor()
 
-# Crear tabla de resultados o añadir columna si no existe
 cursor.execute("""
     CREATE TABLE IF NOT EXISTS public."centros_educativos" (
         district_id INTEGER PRIMARY KEY,
@@ -78,7 +76,6 @@ cursor.execute("""
     );
 """)
 
-# Insertar los resultados en la base de datos
 for item in district_normalized:
     cursor.execute("""
         INSERT INTO public."centros_educativos" (district_id, total_centros_educativos, normalized_total_centros_educativos)
@@ -88,11 +85,8 @@ for item in district_normalized:
             normalized_total_centros_educativos = EXCLUDED.normalized_total_centros_educativos;
     """, (item[0], item[1], item[2]))
 
-# Confirmar los cambios en la base de datos
-conn.commit()
-
-# Cerrar la conexión
+con.commit()
 cursor.close()
-conn.close()
+con.close()
 
 
