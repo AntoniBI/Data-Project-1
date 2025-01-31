@@ -35,7 +35,6 @@ def calcular_color(distrito_id, top_distritos, cumple_precio):
 def main():
     st.title("Mapa por Distritos en Valencia")
 
-    # Cargar datos de distritos
     distritos_data = load_distritos()
 
     # Filtro de precios
@@ -83,6 +82,9 @@ def main():
         (distritos_data["puntuacion_estaciones"] * 0.33) +
         (distritos_data["puntuacion_educativos"] * 0.33)
     ) * 10
+
+    # Redondear a 2 decimales
+    distritos_data["puntuacion_total"] = distritos_data["puntuacion_total"].round(2)
 
     # Filtrar distritos que cumplen con el rango de precios
     distritos_filtrados = distritos_data[
@@ -199,10 +201,7 @@ def main():
     else:
         st.write("No se encontraron distritos dentro del rango de precios seleccionado.")
 
-
-
     # Mostrar los 3 mejores distritos con sus detalles 
-
     st.subheader("Insights para tu seleccion")
     if top_distritos:
 
@@ -225,8 +224,6 @@ def main():
             st.write("---")
     else:
         st.write("No se encontraron distritos recomendados según tus preferencias.")
-
-
 
 if __name__ == "__main__":
     main()

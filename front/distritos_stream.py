@@ -4,10 +4,6 @@ import pydeck as pdk
 import psycopg2
 import json
 
-import sys
-import pg8000.native
-conn = pg8000.native.Connection("postgres", password="Welcome01", host="postgres")
-
 POSTGRES_CONFIG = {
     "host": "postgres",
     "port": 5432,
@@ -18,16 +14,16 @@ POSTGRES_CONFIG = {
 # Función para conectar a la base de datos
 def connect_to_database():
     try:
-        conn = psycopg2.connect(**POSTGRES_CONFIG)
-        return conn
+        con = psycopg2.connect(**POSTGRES_CONFIG)
+        return con
     except Exception as e:
         st.error(f"Error conectando a la base de datos: {e}")
         return None
 
 # Función para cargar los datos de los distritos
 def load_distritos():
-    conn = connect_to_database()
-    if not conn:
+    con = connect_to_database()
+    if not con:
         return pd.DataFrame()
 
     query = """
@@ -38,7 +34,7 @@ def load_distritos():
     FROM public.distritos;
     """
     try:
-        with conn.cursor() as cursor:
+        with con.cursor() as cursor:
             cursor.execute(query)
             rows = cursor.fetchall()
             df = pd.DataFrame(rows, columns=["district_id", "nombre_distrito", "geometry"])
@@ -48,7 +44,7 @@ def load_distritos():
         st.error(f"Error cargando los datos de los distritos: {e}")
         return pd.DataFrame()
     finally:
-        conn.close()
+        con.close()
 
 # Función para dibujar los distritos en el mapa
 def dibujar_distritos(distritos_data, distritos_filtrados):

@@ -2,20 +2,13 @@ import pymongo
 import psycopg2
 import pandas as pd
 
-# Conexión a MongoDB
 myclient = pymongo.MongoClient("mongodb://root:example@mongo:27017")
 mydb = myclient["dataproject1"]
 mycol = mydb["estaciones"]
 
-# Extraer datos de MongoDB
+
 documents = list(mycol.find())
-
-# Transformar documentos de MongoDB a un DataFrame de pandas
 df = pd.DataFrame(documents)
-
-# Asegurarse de que las columnas necesarias existan en el DataFrame
-required_columns = ['coddistrit', 'transporte']
-df = df[required_columns].dropna()
 
 # Agrupar datos por distrito y contar las estaciones totales
 result_df = df.groupby('coddistrit').size().reset_index(name='total_stops')
@@ -27,14 +20,14 @@ result_df['coddistrit'] = result_df['coddistrit'].astype(int)
 result_df['normalized_total_stops'] = (result_df['total_stops'] - result_df['total_stops'].min()) / \
                                       (result_df['total_stops'].max() - result_df['total_stops'].min())
 
-# Conexión a PostgreSQL
-conn = psycopg2.connect(
+
+con = psycopg2.connect(
     user="postgres",
     password="Welcome01",
     host="postgres",
     port=5432
 )
-cursor = conn.cursor()
+cursor = con.cursor()
 
 # Crear tabla de resultados o añadir columna si no existe
 cursor.execute("""
@@ -60,7 +53,6 @@ cursor.execute("""
     END $$;
 """)
 
-# Insertar datos en PostgreSQL desde el DataFrame
 for _, row in result_df.iterrows():
     cursor.execute("""
         INSERT INTO public."total_estaciones" (district_id, total_stops, normalized_total_stops) 
@@ -71,9 +63,8 @@ for _, row in result_df.iterrows():
             normalized_total_stops = EXCLUDED.normalized_total_stops;
     """, (int(row['coddistrit']), int(row['total_stops']), float(row['normalized_total_stops'])))
 
-# Guardar los cambios y cerrar las conexiones
-conn.commit()
+con.commit()
 cursor.close()
-conn.close()
+con.close()
 
 
