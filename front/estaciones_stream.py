@@ -12,7 +12,6 @@ def connect_to_db():
         )
         return conn
     except Exception as e:
-        print("Error al conectar a la base de datos:", e)
         return None
 
 # Obtener datos de hospitales
@@ -24,10 +23,8 @@ def get_estaciones_data():
         query = "SELECT district_id, total_stops, normalized_total_stops FROM total_estaciones ;"
         df = pd.read_sql_query(query, conn)  # Leer datos en un DataFrame
         conn.close()
-        print("Estaciones DataFrame:", df.head())  # Verifica las columnas y datos
         return df
     except Exception as e:
-        print("Error al obtener datos de estaciones:", e)
         if conn:
             conn.close()
         return None

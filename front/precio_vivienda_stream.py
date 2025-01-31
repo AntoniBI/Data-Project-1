@@ -14,7 +14,6 @@ def connect_to_database():
         conn = psycopg2.connect(**POSTGRES_CONFIG)
         return conn
     except Exception as e:
-        print("Error al conectar a la base de datos:", e)
         return None
 
 # Función para cargar los datos de precios de vivienda
@@ -28,7 +27,6 @@ def load_precios_vivienda():
         df = pd.read_sql_query(query, conn)
         return df
     except Exception as e:
-        print("Error cargando los datos de precios de vivienda:", e)
         return pd.DataFrame()
     finally:
         conn.close()

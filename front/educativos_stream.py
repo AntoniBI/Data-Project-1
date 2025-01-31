@@ -12,7 +12,6 @@ def connect_to_db():
         )
         return conn
     except Exception as e:
-        print("Error al conectar a la base de datos:", e)
         return None
 
 # Obtener datos de centros educativos
@@ -24,10 +23,8 @@ def get_educativos_data():
         query = "SELECT district_id, total_centros_educativos, normalized_total_centros_educativos FROM centros_educativos ;"
         df = pd.read_sql_query(query, conn)  # Leer datos en un DataFrame
         conn.close()
-        print("Centros_Educativos DataFrame:", df.head())  # Verifica las columnas y datos
         return df
     except Exception as e:
-        print("Error al obtener datos de educativos:", e)
         if conn:
             conn.close()
         return None
