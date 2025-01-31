@@ -132,7 +132,7 @@ def main():
         <b>Centros Sanitarios:</b> {total_hospitales}<br>
         <b>Estaciones Transporte Público:</b> {total_stops}<br>
         <b>Centros Educativos:</b> {total_centros_educativos}<br>
-        <b>Puntuación Total:</b> {puntuacion_total}
+        <b>Puntuación Total s/10:</b> {puntuacion_total}
 
         """,
         "style": {"backgroundColor": "white", "color": "black"}
