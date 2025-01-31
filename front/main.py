@@ -145,6 +145,7 @@ def main():
     )
     st.pydeck_chart(r)
 
+    # Leyenda del mapa
     with st.container():
         col1, col2, col3, col4, col5 = st.columns(5)
         col1.markdown("<div style='background-color:#008000;width:20px;height:20px;display:inline-block'></div> Mejor distrito", unsafe_allow_html=True)
@@ -162,7 +163,7 @@ def main():
     else:
         st.write("No se encontraron distritos recomendados según tus preferencias.")
 
-    # Crear el gráfico donde muestre el precio medio de vivienda, precio mínimo y precio máximo
+    # Crear el gráfico donde muestre el precio medio de vivienda, precio mínimo y precio máximo dentro del rango de precios seleccionado
     st.subheader("Precio medio m2 de viviendas para tu selección")
     if not distritos_filtrados.empty:
         plt.figure(figsize=(10, 5))
