@@ -39,9 +39,9 @@ def main():
     distritos_data = load_distritos()
 
     # Filtro de precios
-    st.sidebar.header("Filtrar por Precios de Vivienda")
-    precio_min = st.sidebar.slider("Precio mínimo", min_value=500, max_value=4500, value=1150, step=25)
-    precio_max = st.sidebar.slider("Precio máximo", min_value=500, max_value=4500, value=1200, step=25)
+    st.sidebar.header("Filtrar por Precios de Vivienda m2")
+    precio_min = st.sidebar.slider("Precio mínimo (€)", min_value=500, max_value=4500, value=1150, step=25)
+    precio_max = st.sidebar.slider("Precio máximo (€)", min_value=500, max_value=4500, value=1200, step=25)
 
     # Validación del rango de precios
     if precio_min > precio_max:
@@ -79,10 +79,10 @@ def main():
 
     # Calcular puntuación total (hospitales + estaciones + educativos)
     distritos_data["puntuacion_total"] = (
-        distritos_data["puntuacion_hospitales"] +
-        distritos_data["puntuacion_estaciones"] +
-        distritos_data["puntuacion_educativos"]
-    )
+        (distritos_data["puntuacion_hospitales"] * 0.33) +
+        (distritos_data["puntuacion_estaciones"] * 0.33) +
+        (distritos_data["puntuacion_educativos"] * 0.33)
+    ) * 10
 
     # Filtrar distritos que cumplen con el rango de precios
     distritos_filtrados = distritos_data[
@@ -131,7 +131,9 @@ def main():
         <b>Codigo de Distrito:</b> {district_id}<br>
         <b>Centros Sanitarios:</b> {total_hospitales}<br>
         <b>Estaciones Transporte Público:</b> {total_stops}<br>
-        <b>Centros Educativos:</b> {total_centros_educativos}
+        <b>Centros Educativos:</b> {total_centros_educativos}<br>
+        <b>Puntuación Total s/10:</b> {puntuacion_total}
+
         """,
         "style": {"backgroundColor": "white", "color": "black"}
     }
@@ -145,6 +147,7 @@ def main():
     )
     st.pydeck_chart(r)
 
+    # Leyenda del mapa
     with st.container():
         col1, col2, col3, col4, col5 = st.columns(5)
         col1.markdown("<div style='background-color:#008000;width:20px;height:20px;display:inline-block'></div> Mejor distrito", unsafe_allow_html=True)
@@ -162,8 +165,8 @@ def main():
     else:
         st.write("No se encontraron distritos recomendados según tus preferencias.")
 
-    # Crear el gráfico donde muestre el precio medio de vivienda, precio mínimo y precio máximo
-    st.subheader("Precio medio de viviendas para tu selección")
+    # Crear el gráfico donde muestre el precio medio de vivienda, precio mínimo y precio máximo dentro del rango de precios seleccionado
+    st.subheader("Precio medio m2 de viviendas para tu selección")
     if not distritos_filtrados.empty:
         plt.figure(figsize=(10, 5))
         distritos_unicos = distritos_filtrados.drop_duplicates(subset=["nombre_distrito"])
@@ -200,7 +203,7 @@ def main():
 
     # Mostrar los 3 mejores distritos con sus detalles 
 
-    st.subheader("Detalles de los 3 mejores distritos")
+    st.subheader("Insights para tu seleccion")
     if top_distritos:
 
     # Filtrar solo los distritos top y eliminar duplicados
@@ -215,7 +218,7 @@ def main():
             total_educativos = distrito["total_centros_educativos"]
         
             st.write(f"### {nombre_distrito}")
-            st.write(f"  - **Precio Medio de Vivienda**: {precio_medio:,.2f} €")
+            st.write(f"  - **Precio Medio m2 de Vivienda**: {precio_medio:,.2f} €")
             st.write(f"  - **Centros Sanitarios**: {total_hospitales}")
             st.write(f"  - **Estaciones de Transporte Público**: {total_estaciones}")
             st.write(f"  - **Centros Educativos**: {total_educativos}")

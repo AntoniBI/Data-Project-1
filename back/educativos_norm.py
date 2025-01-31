@@ -46,7 +46,7 @@ for item in codpos_count:
             district_frequencies[district_id] = item[1]
 
 # Añadir valores por defecto para los distritos que faltan
-default_values = {8: 26, 6: 23, 14: 21}  # Valores arbitrarios para completar datos
+default_values = {8: 26, 6: 23, 14: 21}  
 for district_id, default_value in default_values.items():
     if district_id not in district_frequencies:
         district_frequencies[district_id] = default_value
@@ -95,5 +95,4 @@ conn.commit()
 cursor.close()
 conn.close()
 
-# Mensaje de éxito
-print("✅ Datos cargados correctamente a PostgreSQL")
+
