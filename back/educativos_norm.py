@@ -44,8 +44,8 @@ for item in codpos_count:
         else:
             district_frequencies[district_id] = item[1]
 
-# Añadir valores por defecto para los distritos que faltan
-default_values = {8: 26, 6: 23, 14: 21}  
+# Añadir distritos sin datos con frecuencia 0, ya que no tenemos información
+default_values = {8: 0, 6: 0, 14: 0}  
 for district_id, default_value in default_values.items():
     if district_id not in district_frequencies:
         district_frequencies[district_id] = default_value
