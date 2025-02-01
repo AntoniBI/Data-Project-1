@@ -65,24 +65,12 @@ El front-end se comunica con el back-end para obtener los datos procesados y pre
 - Herramienta de integración que facilita la ingestión de datos desde diversas APIs públicas y su almacenamiento en MongoDB de manera automatizada.
 
 ### **Video Demo**
+Enlace al video subido a Youtube: https://youtu.be/pNk8_3xJnwE
 
-
-
+### **Presentación para la defensa del Data Project en clase**
+Enlace a la presentacón en Figma: https://www.figma.com/deck/F0fsSuYYpfBUCfjwpivBjW/Data-Project-1?node-id=11-140&t=OwWcRi27WVTH8v9L-1
 
 ## 🚀 **Cómo Iniciar el Servicio**
-1. Inicia los servicios principales ejecutando:
-   ```bash
-   docker compose up -d nifi mongo mongo-express postgres pgadmin
-   ```
-2. Accede a Apache NiFi en el navegador e importa el template correspondiente.
-3. Inicia NiFi y permite que consuma únicamente un flowfile.
-4. Detén NiFi una vez finalizado el proceso.
-5. Levanta los contenedores del back y front con:
-   ```bash
-   docker compose up -d
-   ```
-6. Accede a la aplicación web en el navegador a través de:
-   ```
-   http://localhost:8501
-   ```
+1. Inicia los servicios con docker compose up -d
+2. Accede a la aplicación de Streamlit copiando esta dirección en tu explorador de internet http://localhost:8501
 
