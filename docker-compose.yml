@@ -1,7 +1,9 @@
 services:
     
   nifi:
-    image: apache/nifi:1.28.1
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: nifi_data
     restart: always
     ports:
@@ -12,6 +14,15 @@ services:
     volumes:
       - ./data:/tmp/data
     user: "0:0"
+    depends_on:
+      mongo:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f nifi || exit 1"]
+      interval: 10s
+      retries: 10
+      start_period: 60s
+      timeout: 5s
   
   mongo:
     image: mongo
@@ -23,6 +34,12 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
     volumes:
       - data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.runCommand('ping').ok"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 5s
 
   mongo-express:
     image: mongo-express
@@ -49,6 +66,15 @@ services:
     ports:
       - "5432:5432"
     restart: unless-stopped
+    depends_on:
+      nifi:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 10s
+      retries: 10
+      start_period: 60s
+      timeout: 5s
    
   pgadmin:
     container_name: pgadmin_container
@@ -65,17 +91,14 @@ services:
   back:
     build: ./back
     container_name: back
-    #restart: no
     depends_on:
-      - mongo
-      - postgres
+      postgres:
+        condition: service_healthy
  
   front:
     build: ./front
     container_name: front
-    #restart: no
     depends_on:
-      - postgres
       - back
     ports:
       - "8501:8501"
